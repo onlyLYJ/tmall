@@ -201,6 +201,17 @@ public class UserDAO {
         }
         return bean;
     }
+    
+//    public User get(String name,String password) {
+//    	
+//        User bean = get(name);
+//        
+//        if (null == bean || !bean.getPassword().equals(password)) {
+//        	return null;
+//        }
+//
+//        return bean;
+//    }
 
   
 }

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+<<<<<<< HEAD
 	<classpathentry kind="src" path="src" />
 	<classpathentry kind="con"
 		path="org.eclipse.jdt.launching.JRE_CONTAINER" />
 	<classpathentry kind="lib"
 		path="lib/mysql-connector-java-5.1.35.jar" />
 	<classpathentry kind="output" path="bin" />
+=======
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+>>>>>>> branch 'master' of https://github.com/onlyLYJ/tmall.git
 </classpath>

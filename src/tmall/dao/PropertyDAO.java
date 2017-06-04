@@ -1,16 +1,12 @@
 package tmall.dao;
- 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
- 
+
 import tmall.bean.Category;
 import tmall.bean.Property;
 import tmall.util.DBUtil;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
   
 public class PropertyDAO {
   
@@ -19,8 +15,8 @@ public class PropertyDAO {
         int total = 0;
         try (Connection c = DBUtil.getConnection(); 
         	Statement s = c.createStatement()) {
-  
-            String sql = "select count(*) from Category where id = " + cid;
+
+            String sql = "select count(*) from Property where cid = " + cid;
   
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
@@ -36,7 +32,7 @@ public class PropertyDAO {
     public void add(Property bean) {
   
         String sql = "insert into Property values(null,?,?)";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
   
             ps.setString(1, bean.getName());
             ps.setInt(2, bean.getCategory().getId());
@@ -58,7 +54,7 @@ public class PropertyDAO {
 
   
         String sql = "update Property set cid = ?, name= ? where id = ?";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
   
             ps.setInt(1, bean.getCategory().getId());
             ps.setString(2, bean.getName());
@@ -74,8 +70,8 @@ public class PropertyDAO {
     }
   
     public void delete(int id) {
-  
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
   
             String sql = "delete from Property where id = " + id;
   
@@ -89,8 +85,8 @@ public class PropertyDAO {
     
     public Property get(int id) {
         Property bean = new Property();
-  
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
   
             String sql = "select * from Property where id = " + id;
   
@@ -117,7 +113,7 @@ public class PropertyDAO {
         Property bean = null;
 
         String sql = "select * from Property where name = ? and cid = ?";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, name);
             ps.setInt(2, cid);
@@ -148,8 +144,8 @@ public class PropertyDAO {
         List<Property> beans = new ArrayList<Property>();
   
         String sql = "select * from Property where cid = ? order by id desc limit ?,? ";
-  
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
   
         	ps.setInt(1, cid);
             ps.setInt(2, start);

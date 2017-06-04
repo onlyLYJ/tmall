@@ -9,15 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
  
 import tmall.bean.Category;
+import tmall.bean.Property;
 import tmall.util.DBUtil;
   
-public class CategoryDAO {
+public class PropertyDAO {
   
     public int getTotal(int cid) {
     	
         int total = 0;
         try (Connection c = DBUtil.getConnection(); 
-        	Statement s = c.createStatement();) {
+        	Statement s = c.createStatement()) {
   
             String sql = "select count(*) from Category where id = " + cid;
   
@@ -54,12 +55,13 @@ public class CategoryDAO {
     }
   
     public void update(Property bean) {
+
   
         String sql = "update Property set cid = ?, name= ? where id = ?";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
   
-            ps.setString(1, bean.getCategory().getId());
-            ps.setInt(2, bean.getName());
+            ps.setInt(1, bean.getCategory().getId());
+            ps.setString(2, bean.getName());
             ps.setInt(3, bean.getId());
               
             ps.execute();
@@ -84,18 +86,43 @@ public class CategoryDAO {
             e.printStackTrace();
         }
     }
-  
-    public Property get(String name, int cid) {
-        Property bean = null;
+    
+    public Property get(int id) {
+        Property bean = new Property();
   
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
   
-            String sql = "select * from Property where name = ? and cid = ?";
-            
+            String sql = "select * from Property where id = " + id;
+  
+            ResultSet rs = s.executeQuery(sql);
+  
+            if (rs.next()) {
+ 
+                String name = rs.getString("name");
+                int cid = rs.getInt("cid");
+                bean.setName(name);
+                Category category = new CategoryDAO().get(cid);
+                bean.setCategory(category);
+                bean.setId(id);
+            }
+  
+        } catch (SQLException e) {
+  
+            e.printStackTrace();
+        }
+        return bean;
+    }
+  
+    public Property get(String name, int cid) {
+        Property bean = null;
+
+        String sql = "select * from Property where name = ? and cid = ?";
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
             ps.setString(1, name);
             ps.setInt(2, cid);
             
-            ResultSet rs = s.executeQuery(sql);
+            ResultSet rs = ps.executeQuery(sql);
             
             if (rs.next()) {
                 int id = rs.getInt("id");
@@ -113,7 +140,7 @@ public class CategoryDAO {
         return bean;
     }
   
-    public List<Category> list(int cid) {
+    public List<Property> list(int cid) {
         return list(cid, 0, Short.MAX_VALUE);
     }
   
@@ -129,12 +156,14 @@ public class CategoryDAO {
             ps.setInt(3, count);
   
             ResultSet rs = ps.executeQuery();
+            
   
             while (rs.next()) {
             	Property bean = new Property();
                 int id = rs.getInt(1);
                 String name = rs.getString("name");
                 Category category = new CategoryDAO().get(cid);
+                
                 bean.setId(id);
                 bean.setName(name);
                 bean.setCategory(category);

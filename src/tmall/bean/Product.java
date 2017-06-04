@@ -19,6 +19,10 @@ public class Product {
 	private int reviewCount;
 	private int saleCount;
 
+	public void setOriginalPrice(float originalPrice) {
+		this.originalPrice = originalPrice;
+	}
+
 	public ProductImage getFirstProductImage() {
 		return firstProductImage;
 	}

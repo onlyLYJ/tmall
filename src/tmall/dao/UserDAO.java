@@ -1,21 +1,17 @@
 package tmall.dao;
- 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import tmall.bean.User;
 import tmall.util.DBUtil;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
   
 public class UserDAO {
 	
     public int getTotal() {
         int total = 0;
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
   
             String sql = "select count(*) from User";
   
@@ -33,7 +29,7 @@ public class UserDAO {
     public void add(User bean) {
   
         String sql = "insert into User values(null,?,?)";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
   
             ps.setString(1, bean.getName());
             ps.setString(2, bean.getPassword());
@@ -54,7 +50,7 @@ public class UserDAO {
     public void update(User bean) {
   
         String sql = "update user set name= ? , password = ? where id = ?";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
   
             ps.setString(1, bean.getName());
             ps.setString(2, bean.getPassword());
@@ -70,8 +66,8 @@ public class UserDAO {
     }
   
     public void delete(int id) {
-  
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
   
             String sql = "delete from User where id = " + id;
   
@@ -85,8 +81,8 @@ public class UserDAO {
     
     public User get(int id) {
         User bean = null;
-  
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
   
             String sql = "select * from User where id = " + id;
   
@@ -116,8 +112,8 @@ public class UserDAO {
         List<User> beans = new ArrayList<User>();
   
         String sql = "select * from User order by id desc limit ?,? ";
-  
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
   
             ps.setInt(1, start);
             ps.setInt(2, count);
@@ -147,9 +143,9 @@ public class UserDAO {
     public User get(String name) {
     	
     	User bean = null;
-    
-    	try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
-    		  
+
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
+
             String sql = "select * from User where name = " + name;
   
             ResultSet rs = s.executeQuery(sql);
@@ -170,11 +166,9 @@ public class UserDAO {
     }
     
     public boolean isExist(String name) {
-    	
-    	if (get(name) != null)
-    		return true;
-    	
-    	return false;
+
+        return get(name) != null;
+
     }
   
     public User get(String name,String password) {

@@ -1,23 +1,19 @@
 package tmall.dao;
- 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
- 
+
 import tmall.bean.Category;
 import tmall.util.DBUtil;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
   
 public class CategoryDAO {
   
     public int getTotal() {
     	
         int total = 0;
-        try (Connection c = DBUtil.getConnection(); 
-        	Statement s = c.createStatement();) {
+        try (Connection c = DBUtil.getConnection();
+             Statement s = c.createStatement()) {
   
             String sql = "select count(*) from Category";
   
@@ -35,7 +31,7 @@ public class CategoryDAO {
     public void add(Category bean) {
   
         String sql = "insert into category values(null,?)";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
   
             ps.setString(1, bean.getName());
   
@@ -55,7 +51,7 @@ public class CategoryDAO {
     public void update(Category bean) {
   
         String sql = "update category set name= ? where id = ?";
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
   
             ps.setString(1, bean.getName());
             ps.setInt(2, bean.getId());
@@ -70,8 +66,8 @@ public class CategoryDAO {
     }
   
     public void delete(int id) {
-  
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
   
             String sql = "delete from Category where id = " + id;
   
@@ -85,8 +81,8 @@ public class CategoryDAO {
   
     public Category get(int id) {
         Category bean = null;
-  
-        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
+
+        try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement()) {
   
             String sql = "select * from Category where id = " + id;
   
@@ -114,8 +110,8 @@ public class CategoryDAO {
         List<Category> beans = new ArrayList<Category>();
   
         String sql = "select * from Category order by id desc limit ?,? ";
-  
-        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
   
             ps.setInt(1, start);
             ps.setInt(2, count);
